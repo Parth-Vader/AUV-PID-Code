@@ -16,7 +16,7 @@
 #define ki_right -0.5
 #define kd_right -0.0
 
-float32 yaw=0,roll,pitch,prevError,errorP,errorI,errorD;
+float32 yaw=0,roll,pitch,prevError,errorP,errorI,errorD,inc_yaw;
 float32 goal=0;
 float32 count=1;
 
@@ -32,7 +32,9 @@ void rpyCallback(const kraken_msgs::absoluteRPY &msg)
   else
     {
       prevError  = errorP;
-      errorP = (ini_yaw + inc_yaw-yaw);//intial yaw and  increase in yaw needed
+      errorP = (ini_yaw + inc_yaw - yaw);//intial yaw and  increase in yaw needed .
+      //Inc_yaw is the difference between the values of the desired yaw value and current (i.e. starting yaw value)
+      //The errorP value keeps on decreasing with each iteration and the desired goal is to make it equal to zero so that the error is minimized.
       
       errorI = errorI + errorP;//Integration term - addition of the errors
       errorD = prevError - errorP;//DIfference of the errors 
